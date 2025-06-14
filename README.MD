@@ -1,4 +1,4 @@
-# ATT2 Mod (Minecraft Fabric) développé par Poubone
+# ATT2 Mod 1.20.2 (Minecraft Fabric) développé par Poubone
 
 Un mod Minecraft pour améliorer le gameplay de la map Across The Time 2 via de nombreux ajouts :
 - HUD custom (mana, xp, flèches, chronoton)
@@ -11,7 +11,7 @@ Un mod Minecraft pour améliorer le gameplay de la map Across The Time 2 via de 
 Assurez-vous d’avoir les outils suivants installés :
 - Java 17+
 - Gradle
-- Minecraft 1.20.x (version cible du mod)
+- Minecraft 1.20.2 (version cible du mod)
 
 ```bash
 ./gradlew build
