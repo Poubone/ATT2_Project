@@ -1,0 +1,46 @@
+# Gradle
+.gradle/
+build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Eclipse
+.project
+.classpath
+.cproject
+.settings/
+
+# VS Code
+.vscode/
+
+# Fabric
+run/
+remappedSrc/
+logs/
+cache/
+*.launch
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# OS-specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Config / temp
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Generated JSON config (if you save HUD settings or similar)
+config/att2_hud.json

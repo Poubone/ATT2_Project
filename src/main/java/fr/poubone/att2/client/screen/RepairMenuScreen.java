@@ -1,0 +1,148 @@
+package fr.poubone.att2.client.screen;
+
+import fr.poubone.att2.client.input.KeybindManager;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import org.lwjgl.glfw.GLFW;
+
+public class
+RepairMenuScreen extends Screen {
+    private static final int OPTION_COUNT = 6;
+    private int selectedOption = -1;
+
+    private static final String[] TOOLTIP_LABELS = {
+            "Réparer le casque",
+            "Réparer le plastron",
+            "Réparer le pantalon",
+            "Réparer les bottes",
+            "Réparer l'objet en main secondaire",
+            "Voir les matériaux de réparation"
+    };
+
+    public RepairMenuScreen() {
+        super(Text.literal("Repair Menu"));
+    }
+
+    @Override
+    public boolean shouldPause() {
+        return false;
+    }
+
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
+
+        int cx = width / 2;
+        int cy = height / 2;
+        int radius = 70;
+
+        double dx = mouseX - cx;
+        double dy = mouseY - cy;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        double angle = Math.atan2(dy, dx);
+        angle = (angle + 2 * Math.PI) % (2 * Math.PI);
+
+        final double OFFSET = 1.7;
+
+        if (distance < radius / 2.5) {
+            selectedOption = -1;
+        } else {
+            selectedOption = (int)(((angle / (2 * Math.PI)) * OPTION_COUNT + OFFSET) % OPTION_COUNT);
+        }
+
+        ItemStack[] itemIcons = getRepairOptionIcons();
+
+        for (int i = 0; i < OPTION_COUNT; i++) {
+            double theta = (2 * Math.PI / OPTION_COUNT) * i - Math.PI / 3;
+            int tx = (int) (cx + Math.cos(theta) * radius);
+            int ty = (int) (cy + Math.sin(theta) * radius);
+
+            ItemStack stack = itemIcons[i];
+            ItemRenderer renderer = MinecraftClient.getInstance().getItemRenderer();
+
+            context.getMatrices().push();
+            context.getMatrices().translate(tx - 8, ty - 8, 0);
+            float scale = (i == selectedOption) ? 1.2f : 1.0f;
+            context.getMatrices().scale(scale, scale, 1.0f);
+            context.drawItem(stack, 0, 0);
+            context.getMatrices().pop();
+
+            // Tooltip
+            if (i == selectedOption) {
+                context.drawTooltip(textRenderer, Text.literal(TOOLTIP_LABELS[i]), mouseX, mouseY);
+            }
+        }
+
+        context.drawCenteredTextWithShadow(textRenderer, Text.literal("Réparation"), cx, cy - 8, 0xFFFFFF);
+    }
+
+    private ItemStack[] getRepairOptionIcons() {
+        MinecraftClient client = MinecraftClient.getInstance();
+        ItemStack[] icons = new ItemStack[6];
+
+        if (client.player != null) {
+            icons[0] = getItemOrBarrier(client.player.getInventory().getArmorStack(3)); // Helmet
+            icons[1] = getItemOrBarrier(client.player.getInventory().getArmorStack(2)); // Chestplate
+            icons[2] = getItemOrBarrier(client.player.getInventory().getArmorStack(1)); // Leggings
+            icons[3] = getItemOrBarrier(client.player.getInventory().getArmorStack(0)); // Boots
+            icons[4] = getItemOrBarrier(client.player.getStackInHand(Hand.OFF_HAND));   // Offhand
+        }
+
+        icons[5] = new ItemStack(Items.ANVIL); // Voir les objets
+        return icons;
+    }
+
+    private ItemStack getItemOrBarrier(ItemStack stack) {
+        return (stack != null && !stack.isEmpty()) ? new ItemStack(stack.getItem()) : new ItemStack(Items.BARRIER);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (button == 0) {
+            executeOption(selectedOption);
+            MinecraftClient.getInstance().setScreen(null);
+            KeybindManager.blockRepairUntilRelease();
+            return true;
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public void tick() {
+        if (!isRepairKeyHeld()) {
+            close();
+            executeOption(selectedOption);
+        }
+    }
+
+    private boolean isRepairKeyHeld() {
+        long window = MinecraftClient.getInstance().getWindow().getHandle();
+        int keyCode = KeybindManager.getRepairItemMenuKey().boundKey.getCode();
+        return GLFW.glfwGetKey(window, keyCode) == GLFW.GLFW_PRESS;
+    }
+
+    private void executeOption(int index) {
+        if (index < 0) return;
+
+        String cmd = switch (index) {
+            case 0 -> "function att2:gameplay/shop/mending/tools/trigger_helmet";
+            case 1 -> "function att2:gameplay/shop/mending/tools/trigger_chestplate";
+            case 2 -> "function att2:gameplay/shop/mending/tools/trigger_leggings";
+            case 3 -> "function att2:gameplay/shop/mending/tools/trigger_boots";
+            case 4 -> "function att2:gameplay/shop/mending/tools/trigger_offhand";
+            case 5 -> "function att2:dialogs/gameplay/shop/tools_number_info";
+            default -> null;
+        };
+
+        if (cmd != null && MinecraftClient.getInstance().player != null) {
+            MinecraftClient.getInstance().player.networkHandler.sendCommand(cmd);
+        }
+    }
+}
