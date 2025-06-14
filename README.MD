@@ -56,4 +56,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 🛑 **Note:** This mod is made specifically for the **Across The Time 2** map. Using it outside of this context may not function properly.
 
-🔗 [Download the latest release](https://github.com/TON_UTILISATEUR/TON_REPO/releases/latest)
+🔗 [Download the latest release](https://github.com/Poubone/ATT2_Project/releases/latest)
