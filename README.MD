@@ -23,6 +23,10 @@ Le fichier `.jar` sera généré dans le dossier `build/libs`.
 
 Placez le fichier `.jar` compilé dans le dossier `mods` de votre installation Minecraft utilisant Fabric.
 
+## Premier Setup en jeu
+
+Lorsque vous utilisez le mod pour la première fois, désactivez puis activez de nouveau l'affichage via la touche dans les options pour que le mod puisse activer les scoreboards nécessaires.
+
 ## Licence
 
 Ce projet est sous licence MIT.
