@@ -220,7 +220,7 @@ public class StatUpgradeScreen extends Screen {
             if (key.equals("DAR")) {
                 context.getMatrices().push();
                 context.getMatrices().translate(iconX, y, 0);
-                context.drawItem(Items.FISHING_ROD.getDefaultStack(), 0, 0);
+                context.drawItem(Items.BOOK.getDefaultStack(), 0, 0);
                 context.getMatrices().pop();
             } else {
                 Identifier icon = ModTextures.STAT_ICONS.get(key);

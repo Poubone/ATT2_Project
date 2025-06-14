@@ -30,7 +30,7 @@ public class ArrowDisplay {
         int hotbarX = (screenWidth / 2) - (hotbarWidth / 2);
         int hotbarY = screenHeight - hotbarHeight - 4;
 
-        int arrowX = hotbarX - 56; // à gauche de la hotbar
+        int arrowX = hotbarX - 76; // à gauche de la hotbar
         int arrowY = hotbarY + 6;
 
         context.drawItem(new ItemStack(Items.ARROW), arrowX, arrowY);

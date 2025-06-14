@@ -8,6 +8,7 @@ public class ModTextures {
     public static final Identifier XP_ORB = new Identifier("minecraft", "textures/entity/experience_orb.png");
     public static final Identifier MANA_FRAME = new Identifier("att2", "textures/cadre_vide.png");
     public static final Identifier MANA_FILL = new Identifier("att2", "textures/orbe.png");
+    public static final Identifier DAR_SPRITE = new Identifier("att2", "textures/dahal.png");
 
     public static final Map<String, Identifier> STAT_ICONS = Map.of(
         "HAS", new Identifier("minecraft", "textures/mob_effect/haste.png"),

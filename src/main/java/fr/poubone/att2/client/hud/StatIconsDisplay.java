@@ -33,12 +33,16 @@ public class StatIconsDisplay {
             int y = startY + row * spacingY;
 
             if (label.equals("DAR")) {
+                int frame = (int) ((System.currentTimeMillis() / 100) % 32); 
+                int v = frame * 8;
+
                 context.getMatrices().push();
                 context.getMatrices().translate(x, y, 0);
-                context.getMatrices().scale(0.5f, 0.5f, 1.0f);
-                context.drawItem(Items.FISHING_ROD.getDefaultStack(), 0, 0);
+                RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+                context.drawTexture(ModTextures.DAR_SPRITE, 0, 0, 0, v, 8, 8, 8, 256);
                 context.getMatrices().pop();
-            } else {
+            }
+            else {
                 var icon = ModTextures.STAT_ICONS.get(label);
                 if (icon != null) {
                     RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
