@@ -1,32 +1,59 @@
-# ATT2 Mod 1.20.2 (Minecraft Fabric) développé par Poubone
+# 🎮 ATT2 Mod for Minecraft 1.20.2 (Fabric) – by Poubone
 
-Un mod Minecraft pour améliorer le gameplay de la map Across The Time 2 via de nombreux ajouts :
-- HUD custom (mana, xp, flèches, chronoton)
-- Menus circulaires pour le stockage et la réparation
-- Système d'amélioration de statistiques avec interface
-- Fonctions connectées aux commandes du datapack ATT2
+> A Minecraft mod that enhances gameplay for the *Across The Time 2* adventure map with immersive HUDs, intuitive menus, and gameplay integrations.
 
-## Compilation
+---
 
-Assurez-vous d’avoir les outils suivants installés :
-- Java 17+
-- Gradle
-- Minecraft 1.20.2 (version cible du mod)
+## ✨ Features
+
+- 🎯 **Custom HUD** – Displays **Mana**, **XP**, **Chronotons**, and **Arrows**
+- 🛠️ **Radial Menus** – For **storage** and **item repair**
+- 📈 **Stat Upgrade System** – With custom UI and command integration
+- 📦 **Direct support** for **ATT2 datapack** features via in-game functions
+
+> 💬 *Currently available in **French only***  
+> 🌍 Translations & localization updates are planned.
+
+---
+
+## 🧪 Compilation
+
+> Make sure you have the following:
+
+- ☕ Java 17+
+- 🛠️ Gradle
+- 🧱 Minecraft 1.20.2 (Fabric modloader)
 
 ```bash
 ./gradlew build
 ```
 
-Le fichier `.jar` sera généré dans le dossier `build/libs`.
+The compiled `.jar` file will appear in the `build/libs` folder.
 
-## Installation
+---
 
-Placez le fichier `.jar` compilé dans le dossier `mods` de votre installation Minecraft utilisant Fabric.
+## 🧩 Installation
 
-## Premier Setup en jeu
+1. Download the `.jar` file from the [Releases](../../releases) tab.
+2. Drop it into your Minecraft `mods/` folder (Fabric loader required).
+3. Launch the game!
 
-Lorsque vous utilisez le mod pour la première fois, désactivez puis activez de nouveau l'affichage via la touche dans les options pour que le mod puisse activer les scoreboards nécessaires.
+---
 
-## Licence
+## 🛠 First-Time Setup
 
-Ce projet est sous licence MIT.
+After joining your world for the first time:
+- Go to the keybind settings,
+- Toggle the HUD off and back on to ensure scoreboard objectives initialize correctly.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+🛑 **Note:** This mod is made specifically for the **Across The Time 2** map. Using it outside of this context may not function properly.
+
+🔗 [Download the latest release](https://github.com/TON_UTILISATEUR/TON_REPO/releases/latest)
