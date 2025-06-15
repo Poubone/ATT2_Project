@@ -90,7 +90,7 @@ public class TextComponentSanitizer {
     private static JsonObject createComponent(String text, String color, boolean bold, boolean italic, boolean underlined, boolean strikethrough, boolean obfuscated) {
         JsonObject comp = new JsonObject();
         comp.addProperty("text", text);
-        comp.addProperty("italic", italic); // ✅ applique italic seulement si §o était présent
+        comp.addProperty("italic", italic);
 
         if (color != null) comp.addProperty("color", color);
         if (bold) comp.addProperty("bold", true);
@@ -103,10 +103,8 @@ public class TextComponentSanitizer {
 
     public static JsonObject convertName(String raw) {
         try {
-            // 🔍 Si c'est déjà un JSON correct (comme {"text":"Boule de Feu"}), on ne touche pas
             return JsonParser.parseString(raw).getAsJsonObject();
         } catch (Exception ignored) {
-            // 🔁 Sinon, on convertit à partir d’un §-string
             String cleaned = raw;
             if (cleaned.startsWith("\"") && cleaned.endsWith("\"")) {
                 cleaned = cleaned.substring(1, cleaned.length() - 1);

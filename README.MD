@@ -10,9 +10,33 @@
 - 🛠️ **Radial Menus** – For **storage** and **item repair**
 - 📈 **Stat Upgrade System** – With custom UI and command integration
 - 📦 **Direct support** for **ATT2 datapack** features via in-game functions
+- 📡 **Item Hover Broadcast** – Share your held item in chat with hoverable tooltip
 
 > 💬 *Currently available in **French only***  
 > 🌍 Translations & localization updates are planned.
+
+---
+
+## 📡 Item Hover System
+
+Players can broadcast the item in their hand to nearby players.  
+When the key is pressed (default: **O**), the item is **temporarily shared** via an invisible entity and displayed in chat with a hoverable tooltip.
+
+### ⚙️ How it works
+
+- Pressing the key triggers a `function` that:
+    - stores the held item,
+    - spawns an invisible armor stand holding that item,
+    - removes it after a few seconds.
+- All clients detect these broadcasts and render a **hoverable chat message** for the item.
+
+### 📦 Requirements
+
+> This system **requires the official datapack** to be installed and loaded.
+
+Make sure the datapack (`mymod_broadcast_delayed_setitem.zip`) is in your world’s `datapacks/` folder and correctly activated.
+
+You can download it directly from the [Releases](../../releases) tab.
 
 ---
 

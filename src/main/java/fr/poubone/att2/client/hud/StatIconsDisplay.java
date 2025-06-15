@@ -1,13 +1,12 @@
 package fr.poubone.att2.client.hud;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import fr.poubone.att2.client.data.StatManager;
 import fr.poubone.att2.client.util.ModTextures;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.Items;
 import net.minecraft.text.Text;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 public class StatIconsDisplay {
     public static void render(DrawContext context) {

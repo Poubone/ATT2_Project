@@ -1,12 +1,11 @@
 package fr.poubone.att2.client.hud;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import fr.poubone.att2.client.util.ModTextures;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardObjective;
-import net.minecraft.scoreboard.ScoreboardPlayerScore;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 public class ManaOrbDisplay {
     public static void render(DrawContext context) {

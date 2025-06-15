@@ -134,6 +134,7 @@ public class KeybindManager {
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.gray SPD_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.green STR_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.white SKILLPOINT");
+                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.light_purple LEVELMASTER");
 
             }
             while (statUpgradeMenuKey.wasPressed()) {
@@ -224,7 +225,7 @@ public class KeybindManager {
         client.player.networkHandler.sendChatCommand(tellraw);
 
         // ✅ Ensuite lance le broadcast
-        client.player.networkHandler.sendChatCommand("function mymod:broadcast");
+        client.player.networkHandler.sendChatCommand("function att2_addon_itemhoover:broadcast");
     }
 
 

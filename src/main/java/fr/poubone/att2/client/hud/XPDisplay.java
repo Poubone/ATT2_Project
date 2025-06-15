@@ -28,6 +28,18 @@ public class XPDisplay {
         if (required != null && current != null) {
             int requiredXp = scoreboard.getPlayerScore(name, required).getScore();
             int currentLvl = scoreboard.getPlayerScore(name, current).getScore();
+            if (currentLvl >= 50){
+                ScoreboardObjective master = scoreboard.getObjectives()
+                        .stream()
+                        .filter(objective -> objective.getName().equals("LEVELMASTER"))
+                        .findFirst()
+                        .orElse(null);
+                if (master != null) {
+                    int currentMaster = scoreboard.getPlayerScore(name, master).getScore();
+                    currentLvl = currentLvl + currentMaster;
+
+                }
+            }
             int currentXp = client.player.experienceLevel;
 
             String display = "Niveau " + currentLvl + " : " + currentXp + "/" + requiredXp;

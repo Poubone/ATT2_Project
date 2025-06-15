@@ -1,8 +1,7 @@
 package fr.poubone.att2.client;
 
-import fr.poubone.att2.client.input.KeybindManager;
 import fr.poubone.att2.client.hud.HudRenderer;
-import fr.poubone.att2.client.util.BroadcastScanner;
+import fr.poubone.att2.client.input.KeybindManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
