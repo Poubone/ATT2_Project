@@ -102,23 +102,31 @@ public class TextComponentSanitizer {
     }
 
     public static JsonObject convertName(String raw) {
-        String cleaned = raw;
-        if (cleaned.startsWith("\"") && cleaned.endsWith("\"")) {
-            cleaned = cleaned.substring(1, cleaned.length() - 1);
+        try {
+            // 🔍 Si c'est déjà un JSON correct (comme {"text":"Boule de Feu"}), on ne touche pas
+            return JsonParser.parseString(raw).getAsJsonObject();
+        } catch (Exception ignored) {
+            // 🔁 Sinon, on convertit à partir d’un §-string
+            String cleaned = raw;
+            if (cleaned.startsWith("\"") && cleaned.endsWith("\"")) {
+                cleaned = cleaned.substring(1, cleaned.length() - 1);
+            }
+
+            JsonArray parts = convertSectionColorToJsonComponents(cleaned);
+            if (parts.size() == 1 && parts.get(0).isJsonObject()) {
+                JsonObject single = parts.get(0).getAsJsonObject();
+                single.addProperty("italic", false);
+                return single;
+            }
+
+            JsonObject root = new JsonObject();
+            root.addProperty("text", "");
+            root.addProperty("italic", false);
+            root.add("extra", parts);
+            return root;
         }
-
-        JsonArray parts = convertSectionColorToJsonComponents(cleaned);
-        if (parts.size() == 1 && parts.get(0).isJsonObject()) {
-            return parts.get(0).getAsJsonObject();
-        }
-
-        JsonObject root = new JsonObject();
-        root.addProperty("text", "");
-        root.add("extra", parts);
-        root.addProperty("italic", false); // 🔒 sécurité au niveau racine
-
-        return root;
     }
+
 
     public static JsonArray convertLore(List<String> loreLines) {
         JsonArray newLore = new JsonArray();
