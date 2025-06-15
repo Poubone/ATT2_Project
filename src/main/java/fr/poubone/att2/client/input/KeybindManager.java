@@ -4,12 +4,17 @@ import fr.poubone.att2.client.screen.HUDConfigScreen;
 import fr.poubone.att2.client.screen.RadialMenuScreen;
 import fr.poubone.att2.client.screen.RepairMenuScreen;
 import fr.poubone.att2.client.screen.StatUpgradeScreen;
+import fr.poubone.att2.client.util.HooverItem;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 
 public class KeybindManager {
@@ -32,6 +37,9 @@ public class KeybindManager {
 
     private static KeyBinding whistle;
     private static KeyBinding openHUDConfig;
+
+    private static KeyBinding hooverItem;
+
 
 
 
@@ -100,6 +108,14 @@ public class KeybindManager {
                 "ATT2"
         ));
 
+        hooverItem = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "Hoover Item",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_O,
+                "ATT2"
+        ));
+
+
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player == null) return;
@@ -111,7 +127,6 @@ public class KeybindManager {
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.black DAHAL");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.aqua DAHALMAX");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.blue LVL_UPGRADE_REQ");
-
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_aqua DAR_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_blue HAS_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_gray HER_TOT");
@@ -120,9 +135,7 @@ public class KeybindManager {
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.red RES_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.gray SPD_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.green STR_TOT");
-
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.white SKILLPOINT");
-
 
             }
             while (statUpgradeMenuKey.wasPressed()) {
@@ -144,6 +157,10 @@ public class KeybindManager {
 
             while (openHUDConfig.wasPressed()) {
                 client.setScreen(new HUDConfigScreen());
+            }
+
+            while (hooverItem.wasPressed()) {
+                HooverItem.sendHoverItemToChat(client);
             }
 
             if (radialMenuKey.isPressed()) {
@@ -181,4 +198,6 @@ public class KeybindManager {
     public static void blockRepairUntilRelease() {
         repairReleased = false;
     }
+
+
 }
