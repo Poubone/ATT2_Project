@@ -4,17 +4,13 @@ import fr.poubone.att2.client.screen.HUDConfigScreen;
 import fr.poubone.att2.client.screen.RadialMenuScreen;
 import fr.poubone.att2.client.screen.RepairMenuScreen;
 import fr.poubone.att2.client.screen.StatUpgradeScreen;
-import fr.poubone.att2.client.util.HooverItem;
+import fr.poubone.att2.client.util.ChatUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 
 public class KeybindManager {
@@ -160,7 +156,12 @@ public class KeybindManager {
             }
 
             while (hooverItem.wasPressed()) {
-                HooverItem.sendHoverItemToChat(client);
+                ItemStack stack = client.player.getMainHandStack();
+                if (stack.hasNbt()) {
+                   ChatUtils.displayHeldItem(client);
+                } else {
+                    System.out.println("Pas de NBT sur l'item");
+                }
             }
 
             if (radialMenuKey.isPressed()) {
