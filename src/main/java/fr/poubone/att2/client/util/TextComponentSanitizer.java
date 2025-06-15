@@ -11,33 +11,19 @@ import net.minecraft.util.Formatting;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
-import net.minecraft.util.Formatting;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class TextComponentSanitizer {
 
-    // 🔧 Méthode principale à appeler
     public static void sanitizeDisplayTag(NbtCompound itemTag) {
         if (!itemTag.contains("display", 10)) return;
 
         NbtCompound display = itemTag.getCompound("display");
 
-        // 🔄 Corriger Name
         if (display.contains("Name", 8)) {
             String rawName = display.getString("Name");
             JsonObject cleanName = convertName(rawName);
-            display.putString("Name", cleanName.toString()); // ← Objet JSON stringifié, pas "§..."
+            display.putString("Name", cleanName.toString());
         }
 
-        // 🔄 Corriger Lore
         if (display.contains("Lore", 9)) {
             NbtList loreList = display.getList("Lore", 8);
             List<String> rawLore = new ArrayList<>();
@@ -48,7 +34,6 @@ public class TextComponentSanitizer {
             JsonArray cleanLore = convertLore(rawLore);
             NbtList newLoreList = new NbtList();
             for (int i = 0; i < cleanLore.size(); i++) {
-                // Chaque ligne = JsonArray to string (ex: [{"text":"..."},{"text":"..."}])
                 newLoreList.add(NbtString.of(cleanLore.get(i).toString()));
             }
 
@@ -56,7 +41,6 @@ public class TextComponentSanitizer {
         }
     }
 
-    // 🔁 Convert §-texte → JSON components
     public static JsonArray convertSectionColorToJsonComponents(String input) {
         JsonArray components = new JsonArray();
         StringBuilder currentText = new StringBuilder();
@@ -106,16 +90,17 @@ public class TextComponentSanitizer {
     private static JsonObject createComponent(String text, String color, boolean bold, boolean italic, boolean underlined, boolean strikethrough, boolean obfuscated) {
         JsonObject comp = new JsonObject();
         comp.addProperty("text", text);
+        comp.addProperty("italic", italic); // ✅ applique italic seulement si §o était présent
+
         if (color != null) comp.addProperty("color", color);
         if (bold) comp.addProperty("bold", true);
-        if (italic) comp.addProperty("italic", true);
         if (underlined) comp.addProperty("underlined", true);
         if (strikethrough) comp.addProperty("strikethrough", true);
         if (obfuscated) comp.addProperty("obfuscated", true);
+
         return comp;
     }
 
-    // 🎨 Corriger le display.Name
     public static JsonObject convertName(String raw) {
         String cleaned = raw;
         if (cleaned.startsWith("\"") && cleaned.endsWith("\"")) {
@@ -130,16 +115,17 @@ public class TextComponentSanitizer {
         JsonObject root = new JsonObject();
         root.addProperty("text", "");
         root.add("extra", parts);
+        root.addProperty("italic", false); // 🔒 sécurité au niveau racine
+
         return root;
     }
 
-    // 📜 Corriger toutes les lignes de Lore
     public static JsonArray convertLore(List<String> loreLines) {
         JsonArray newLore = new JsonArray();
         for (String line : loreLines) {
             String rawText = extractTextFromJsonLine(line);
             JsonArray components = convertSectionColorToJsonComponents(rawText);
-            newLore.add(components); // chaque ligne = tableau de composants
+            newLore.add(components);
         }
         return newLore;
     }
@@ -152,6 +138,4 @@ public class TextComponentSanitizer {
             return jsonLine;
         }
     }
-
-
 }

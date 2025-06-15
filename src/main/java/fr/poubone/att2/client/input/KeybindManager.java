@@ -4,12 +4,12 @@ import fr.poubone.att2.client.screen.HUDConfigScreen;
 import fr.poubone.att2.client.screen.RadialMenuScreen;
 import fr.poubone.att2.client.screen.RepairMenuScreen;
 import fr.poubone.att2.client.screen.StatUpgradeScreen;
-import fr.poubone.att2.client.util.ChatUtils;
+import fr.poubone.att2.client.util.BroadcastScanner;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
@@ -34,9 +34,11 @@ public class KeybindManager {
     private static KeyBinding whistle;
     private static KeyBinding openHUDConfig;
 
-    private static KeyBinding hooverItem;
 
 
+    private static KeyBinding broadcastKey;
+    private static long lastUsedTime = 0;
+    private static final long COOLDOWN_MS = 5000;
 
 
 
@@ -104,7 +106,7 @@ public class KeybindManager {
                 "ATT2"
         ));
 
-        hooverItem = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        broadcastKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "Hoover Item",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_O,
@@ -128,7 +130,7 @@ public class KeybindManager {
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_gray HER_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_green HUN_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_purple LUC_TOT");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.red RES_TOT");
+                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.yellow RES_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.gray SPD_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.green STR_TOT");
                 client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.white SKILLPOINT");
@@ -155,13 +157,8 @@ public class KeybindManager {
                 client.setScreen(new HUDConfigScreen());
             }
 
-            while (hooverItem.wasPressed()) {
-                ItemStack stack = client.player.getMainHandStack();
-                if (stack.hasNbt()) {
-                   ChatUtils.displayHeldItem(client);
-                } else {
-                    System.out.println("Pas de NBT sur l'item");
-                }
+            while (broadcastKey.wasPressed()) {
+                handleBroadcastKey(client);
             }
 
             if (radialMenuKey.isPressed()) {
@@ -181,6 +178,9 @@ public class KeybindManager {
             } else {
                 repairReleased = true;
             }
+
+            BroadcastScanner.tick(client);
+
         });
 
 
@@ -198,6 +198,33 @@ public class KeybindManager {
     }
     public static void blockRepairUntilRelease() {
         repairReleased = false;
+    }
+
+
+    private static void handleBroadcastKey(MinecraftClient client) {
+        if (client.player == null) return;
+
+        long now = System.currentTimeMillis();
+        if (now - lastUsedTime < COOLDOWN_MS) {
+            long secondsLeft = (COOLDOWN_MS - (now - lastUsedTime)) / 1000;
+            client.player.sendMessage(Text.literal("§cAttends encore " + secondsLeft + "s avant de renvoyer un item."), true);
+            return;
+        }
+
+        lastUsedTime = now;
+
+        String playerName = client.player.getName().getString();
+
+        // ✅ Envoie une commande tellraw visible par tous
+        String tellraw = String.format(
+                "tellraw @a [{\"text\":\"%s\",\"color\":\"aqua\"},{\"text\":\" a partagé un objet !\",\"color\":\"gray\"}]",
+                playerName
+        );
+
+        client.player.networkHandler.sendChatCommand(tellraw);
+
+        // ✅ Ensuite lance le broadcast
+        client.player.networkHandler.sendChatCommand("function mymod:broadcast");
     }
 
 

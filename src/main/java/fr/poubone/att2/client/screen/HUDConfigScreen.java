@@ -19,6 +19,10 @@ public class HUDConfigScreen extends Screen {
     }
 
     @Override
+    public boolean shouldPause() {
+        return false;
+    }
+    @Override
     protected void init() {
         HUDConfig config = HUDConfig.get();
         int y = height / 4;
