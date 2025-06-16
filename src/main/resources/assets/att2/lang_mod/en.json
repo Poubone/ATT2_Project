@@ -1,0 +1,50 @@
+{
+  "screen.hud_config.title": "HUD Configuration",
+  "screen.hud_config.show_chronoton": "Show Chronoton",
+  "screen.hud_config.show_xp": "Show XP",
+  "screen.hud_config.show_mana": "Show Mana",
+  "screen.hud_config.show_stats": "Show Stats",
+  "screen.hud_config.show_arrows": "Show Arrows",
+  "screen.hud_config.language_button": "Language",
+  "screen.hud_config.save_and_close": "Save and Close",
+  "keybind.toggle_hud.on": "HUD: Enabled",
+  "keybind.toggle_hud.off": "HUD: Disabled",
+  "keybind.broadcast.cooldown": "Wait {s}s before broadcasting again.",
+  "keybind.broadcast.shared": "has shared an item!",
+
+  "screen.radial.title": "Stock Menu",
+  "screen.radial.center_label": "Storage",
+
+  "screen.radial.option.0": "Stock 1",
+  "screen.radial.option.1": "Stock 2",
+  "screen.radial.option.2": "Stock 3",
+  "screen.radial.option.3": "Stock 4",
+  "screen.radial.option.4": "Stock 5",
+  "screen.radial.option.5": "Store Items",
+
+
+  "screen.repair.title": "Repair Menu",
+  "screen.repair.option.0": "Repair Helmet",
+  "screen.repair.option.1": "Repair Chestplate",
+  "screen.repair.option.2": "Repair Leggings",
+  "screen.repair.option.3": "Repair Boots",
+  "screen.repair.option.4": "Repair Offhand Item",
+  "screen.repair.option.5": "View Repair Materials",
+
+  "screen.stat_upgrade.title": "Stat Upgrade Menu",
+  "screen.stat_upgrade.close": "Close",
+  "screen.stat_upgrade.skill_points": "Available Skill Points: {points}",
+  "screen.stat_upgrade.req": "Required skill points",
+
+  "stat.label.str": "Strength",
+  "stat.label.res": "Resistance",
+  "stat.label.spd": "Speed",
+  "stat.label.has": "Attack Speed",
+  "stat.label.dar": "Dahäl Regen",
+  "stat.label.her": "Health Regen",
+  "stat.label.luc": "Luck",
+  "stat.label.hun": "Saturation"
+}
+
+
+

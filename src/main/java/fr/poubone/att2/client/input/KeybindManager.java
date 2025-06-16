@@ -1,10 +1,12 @@
 package fr.poubone.att2.client.input;
 
+import fr.poubone.att2.client.hud.HUDConfig;
 import fr.poubone.att2.client.screen.HUDConfigScreen;
 import fr.poubone.att2.client.screen.RadialMenuScreen;
 import fr.poubone.att2.client.screen.RepairMenuScreen;
 import fr.poubone.att2.client.screen.StatUpgradeScreen;
 import fr.poubone.att2.client.util.BroadcastScanner;
+import fr.poubone.att2.client.util.ModLanguageManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
@@ -34,6 +36,7 @@ public class KeybindManager {
     private static KeyBinding whistle;
     private static KeyBinding openHUDConfig;
 
+    private static boolean languageLoaded = false;
 
 
     private static KeyBinding broadcastKey;
@@ -44,97 +47,105 @@ public class KeybindManager {
 
     public static void register() {
         toggleHUDKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "Toggle HUD",
+                "key.att2.toggle_hud",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_H,
-                "ATT2"
+                "key.categories.att2"
         ));
 
         radialMenuKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "Menu de stockage",
+                "key.att2.radial_menu",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_R,
-                "ATT2"
+                "key.categories.att2"
         ));
 
-
         statUpgradeMenuKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "Menu des statistiques du joueur",
+                "key.att2.stat_upgrade_menu",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_U,
-                "ATT2"
+                "key.categories.att2"
         ));
 
         playerGlow = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "Faire briller les joueurs",
+                "key.att2.player_glow",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_G,
-                "ATT2"
+                "key.categories.att2"
         ));
+
         collectItems = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "Collecter les items",
+                "key.att2.collect_items",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_C,
-                "ATT2"
+                "key.categories.att2"
         ));
+
         quest = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "Quête principale",
+                "key.att2.quest_main",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_B,
-                "ATT2"
+                "key.categories.att2"
         ));
 
         repairItemMenuKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "Menu de réparation",
+                "key.att2.repair_menu",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_I,
-                "ATT2"
+                "key.categories.att2"
         ));
 
         whistle = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "Siffler son cheval",
+                "key.att2.whistle",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_W,
-                "ATT2"
+                "key.categories.att2"
         ));
 
-
         openHUDConfig = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "Configurer HUD",
+                "key.att2.hud_config",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_K,
-                "ATT2"
+                "key.categories.att2"
         ));
 
         broadcastKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "Hoover Item",
+                "key.att2.broadcast",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_O,
-                "ATT2"
+                "key.categories.att2"
         ));
-
-
-
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player == null) return;
 
+
+            if (!languageLoaded && client.getResourceManager() != null) {
+                languageLoaded = true;
+                String lang = HUDConfig.getModLanguage();
+                ModLanguageManager.loadLanguage(client, lang);
+            }
+
             while (toggleHUDKey.wasPressed()) {
                 showCustomHUD = !showCustomHUD;
-                client.player.sendMessage(Text.literal("HUD: " + (showCustomHUD ? "Activé" : "Désactivé")), true);
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.gold GAMELEVEL");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.black DAHAL");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.aqua DAHALMAX");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.blue LVL_UPGRADE_REQ");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_aqua DAR_TOT");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_blue HAS_TOT");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_gray HER_TOT");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_green HUN_TOT");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_purple LUC_TOT");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.yellow RES_TOT");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.gray SPD_TOT");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.green STR_TOT");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.white SKILLPOINT");
-                client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.light_purple LEVELMASTER");
+                String key = showCustomHUD ? "keybind.toggle_hud.on" : "keybind.toggle_hud.off";
+                client.player.sendMessage(ModLanguageManager.get(key), true);
+                if (showCustomHUD){
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.gold GAMELEVEL");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.black DAHAL");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.aqua DAHALMAX");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.blue LVL_UPGRADE_REQ");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_aqua DAR_TOT");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_blue HAS_TOT");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_gray HER_TOT");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_green HUN_TOT");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.dark_purple LUC_TOT");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.yellow RES_TOT");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.gray SPD_TOT");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.green STR_TOT");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.white SKILLPOINT");
+                    client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.light_purple LEVELMASTER");
+                }
+
 
             }
             while (statUpgradeMenuKey.wasPressed()) {
@@ -208,7 +219,8 @@ public class KeybindManager {
         long now = System.currentTimeMillis();
         if (now - lastUsedTime < COOLDOWN_MS) {
             long secondsLeft = (COOLDOWN_MS - (now - lastUsedTime)) / 1000;
-            client.player.sendMessage(Text.literal("§cAttends encore " + secondsLeft + "s avant de renvoyer un item."), true);
+            String msg = ModLanguageManager.get("keybind.broadcast.cooldown").getString().replace("{s}", String.valueOf(secondsLeft));
+            client.player.sendMessage(Text.literal("§c" + msg), true);
             return;
         }
 
@@ -218,8 +230,9 @@ public class KeybindManager {
 
         // ✅ Envoie une commande tellraw visible par tous
         String tellraw = String.format(
-                "tellraw @a [{\"text\":\"%s\",\"color\":\"aqua\"},{\"text\":\" a partagé un objet !\",\"color\":\"gray\"}]",
-                playerName
+                "tellraw @a [{\"text\":\"%s\",\"color\":\"aqua\"},{\"text\":\" %s\",\"color\":\"gray\"}]",
+                playerName,
+                ModLanguageManager.get("keybind.broadcast.shared").getString()
         );
 
         client.player.networkHandler.sendChatCommand(tellraw);

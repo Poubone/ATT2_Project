@@ -2,6 +2,7 @@ package fr.poubone.att2.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.poubone.att2.client.data.StatManager;
+import fr.poubone.att2.client.util.ModLanguageManager;
 import fr.poubone.att2.client.util.ModTextures;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
@@ -23,20 +24,7 @@ public class StatUpgradeScreen extends Screen {
     private static final int COLUMN_SPACING = 180;
     private int skillPoints = 0;
 
-
-    private final Map<String, String> STAT_LABELS = new LinkedHashMap<>();
-
-    {
-        STAT_LABELS.put("STR", "Force");
-        STAT_LABELS.put("RES", "Résistance");
-        STAT_LABELS.put("SPD", "Vitesse");
-        STAT_LABELS.put("HAS", "Vitesse d'attaque");
-        STAT_LABELS.put("DAR", "Regain de Dahäl");
-        STAT_LABELS.put("HER", "Regain de vie");
-        STAT_LABELS.put("LUC", "Chance");
-        STAT_LABELS.put("HUN", "Saturation");
-    }
-
+    private final List<String> STAT_KEYS = List.of("STR", "RES", "SPD", "HAS", "DAR", "HER", "LUC", "HUN");
 
     private final Map<String, String> STAT_COMMAND_KEYS = Map.of(
             "STR", "strength",
@@ -57,7 +45,7 @@ public class StatUpgradeScreen extends Screen {
     private boolean statTickActive = false;
 
     public StatUpgradeScreen() {
-        super(Text.literal("Stat Upgrade Menu"));
+        super(ModLanguageManager.get("screen.stat_upgrade.title"));
     }
 
     @Override
@@ -71,7 +59,7 @@ public class StatUpgradeScreen extends Screen {
         int startY = 40;
 
         int i = 0;
-        for (String key : STAT_LABELS.keySet()) {
+        for (String key : STAT_KEYS) {
             int col = i % 2;
             int row = i / 2;
 
@@ -86,28 +74,20 @@ public class StatUpgradeScreen extends Screen {
             int textX = baseX - textWidth / 2;
             int buttonX = textX + textWidth + 5;
 
-            String commandKey = STAT_COMMAND_KEYS.getOrDefault(key, key.toLowerCase());
             ButtonWidget plusButton = ButtonWidget.builder(Text.literal("+"), btn -> {
-                MinecraftClient client = MinecraftClient.getInstance();
                 String cmdKey = STAT_COMMAND_KEYS.getOrDefault(key, key.toLowerCase());
-
-                // Execute function
-                client.player.networkHandler.sendCommand("function att2:gameplay/stat/" + cmdKey + "/upgrade");
-
+                MinecraftClient.getInstance().player.networkHandler.sendCommand("function att2:gameplay/stat/" + cmdKey + "/upgrade");
                 startUpgradeRequirementFetch();
-                //statTickActive = true;
-
             }).dimensions(buttonX, y, 20, 20).build();
-
 
             this.addDrawableChild(plusButton);
             buttonToStatKey.put(plusButton, key);
             i++;
         }
 
-        // Bouton fermer
+        // 🔻 Bouton Fermer
         int closeY = startY + 5 * LINE_HEIGHT;
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("Fermer"), btn -> {
+        this.addDrawableChild(ButtonWidget.builder(ModLanguageManager.get("screen.stat_upgrade.close"), btn -> {
             MinecraftClient.getInstance().setScreen(null);
         }).dimensions(this.width / 2 - 40, closeY, 80, 20).build());
     }
@@ -119,12 +99,10 @@ public class StatUpgradeScreen extends Screen {
         pendingStatTasks.clear();
         pendingStatTasks.add("SKILLPOINT_SET");
         pendingStatTasks.add("SKILLPOINT_GET");
-        for (String stat : STAT_LABELS.keySet()) {
+        for (String stat : STAT_KEYS) {
             pendingStatTasks.add("SET_" + stat);
             pendingStatTasks.add("GET_" + stat);
         }
-
-
 
         tickCooldown = 0;
         statTickActive = true;
@@ -146,8 +124,6 @@ public class StatUpgradeScreen extends Screen {
 
         String task = pendingStatTasks.poll();
 
-
-
         if (task.startsWith("SET_")) {
             String statKey = task.substring(4);
             String objective = statKey + "_UPGRADE_REQ";
@@ -168,11 +144,10 @@ public class StatUpgradeScreen extends Screen {
                 upgradeRequirements.put(statKey, val);
             }
             tickCooldown = 1;
-        }else if (task.equals("SKILLPOINT_SET")) {
+        } else if (task.equals("SKILLPOINT_SET")) {
             client.player.networkHandler.sendCommand("scoreboard objectives setdisplay sidebar.team.red SKILLPOINT");
             tickCooldown = 2;
-        }
-        else if (task.equals("SKILLPOINT_GET")) {
+        } else if (task.equals("SKILLPOINT_GET")) {
             String objectiveName = "SKILLPOINT";
             String playerName = client.player.getEntityName();
             Scoreboard scoreboard = client.world.getScoreboard();
@@ -186,10 +161,8 @@ public class StatUpgradeScreen extends Screen {
             if (objective != null) {
                 skillPoints = scoreboard.getPlayerScore(playerName, objective).getScore();
             }
-
             tickCooldown = 1;
         }
-
     }
 
     @Override
@@ -201,7 +174,7 @@ public class StatUpgradeScreen extends Screen {
         int startY = 40;
 
         int i = 0;
-        for (String key : STAT_LABELS.keySet()) {
+        for (String key : STAT_KEYS) {
             int col = i % 2;
             int row = i / 2;
 
@@ -231,15 +204,13 @@ public class StatUpgradeScreen extends Screen {
 
             context.drawText(textRenderer, text, textX, y + 4, 0xFFFFFF, false);
 
-            // Tooltip sur le texte
             if (mouseX >= textX && mouseX <= textX + textWidth && mouseY >= y && mouseY <= y + LINE_HEIGHT) {
-                context.drawTooltip(textRenderer, Text.literal(STAT_LABELS.get(key)), mouseX, mouseY);
+                context.drawTooltip(textRenderer, ModLanguageManager.get("stat.label." + key.toLowerCase()), mouseX, mouseY);
             }
 
             i++;
         }
 
-        // Tooltip sur les boutons +
         for (Map.Entry<ButtonWidget, String> entry : buttonToStatKey.entrySet()) {
             ButtonWidget btn = entry.getKey();
             String statKey = entry.getValue();
@@ -247,16 +218,11 @@ public class StatUpgradeScreen extends Screen {
             if (btn.isHovered()) {
                 Integer req = upgradeRequirements.get(statKey);
                 if (req != null) {
-                    context.drawTooltip(textRenderer, Text.literal("Points d'aptitudes nécessaires : " + req), mouseX, mouseY);
+                    context.drawTooltip(textRenderer, ModLanguageManager.get("screen.stat_upgrade.req").copy().append(" " + req), mouseX, mouseY);
                 }
             }
-        }
 
-        for (Map.Entry<ButtonWidget, String> entry : buttonToStatKey.entrySet()) {
-            ButtonWidget btn = entry.getKey();
-            String statKey = entry.getValue();
             Integer req = upgradeRequirements.get(statKey);
-
             if (req != null) {
                 if (skillPoints < req) {
                     btn.setMessage(Text.literal("🔒"));
@@ -268,7 +234,7 @@ public class StatUpgradeScreen extends Screen {
             }
         }
 
-        String header = "Points d'aptitudes disponibles : " + skillPoints;
+        String header = ModLanguageManager.get("screen.stat_upgrade.skill_points").getString().replace("{points}", String.valueOf(skillPoints));
         context.drawCenteredTextWithShadow(this.textRenderer, Text.literal(header), this.width / 2, 15, 0xFFFFFF);
     }
 

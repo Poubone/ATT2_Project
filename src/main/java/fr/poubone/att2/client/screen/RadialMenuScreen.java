@@ -1,6 +1,7 @@
 package fr.poubone.att2.client.screen;
 
 import fr.poubone.att2.client.input.KeybindManager;
+import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -12,12 +13,8 @@ public class RadialMenuScreen extends Screen {
     private static final int OPTION_COUNT = 6;
     private int selectedOption = -1;
 
-    private static final String[] OPTION_LABELS = {
-            "Stock 1", "Stock 2", "Stock 3", "Stock 4", "Stock 5", "Ranger"
-    };
-
     public RadialMenuScreen() {
-        super(Text.literal("Stock Menu"));
+        super(ModLanguageManager.get("screen.radial.title"));
     }
 
     @Override
@@ -68,11 +65,11 @@ public class RadialMenuScreen extends Screen {
             }
 
             if (i == selectedOption) {
-                context.drawTooltip(textRenderer, Text.literal(OPTION_LABELS[i]), mouseX, mouseY);
+                context.drawTooltip(textRenderer, ModLanguageManager.get("screen.radial.option." + i), mouseX, mouseY);
             }
         }
 
-        context.drawCenteredTextWithShadow(textRenderer, Text.literal("Stockage"), cx, cy - 8, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(textRenderer, ModLanguageManager.get("screen.radial.center_label"), cx, cy - 8, 0xFFFFFF);
     }
 
     @Override

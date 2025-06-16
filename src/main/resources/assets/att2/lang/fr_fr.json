@@ -1,0 +1,14 @@
+{
+  "key.categories.att2": "ATT2",
+
+  "key.att2.toggle_hud": "Basculer le HUD",
+  "key.att2.radial_menu": "Menu de stockage",
+  "key.att2.stat_upgrade_menu": "Menu de stats",
+  "key.att2.player_glow": "Faire briller les joueurs",
+  "key.att2.collect_items": "Ramasser les objets",
+  "key.att2.quest_main": "Quête principale",
+  "key.att2.repair_menu": "Menu de réparation",
+  "key.att2.whistle": "Siffler son cheval",
+  "key.att2.hud_config": "Configurer le HUD",
+  "key.att2.broadcast": "Partager un objet dans le chat"
+}

@@ -1,0 +1,14 @@
+{
+  "key.categories.att2": "ATT2",
+
+  "key.att2.toggle_hud": "Toggle HUD",
+  "key.att2.radial_menu": "Storage Menu",
+  "key.att2.stat_upgrade_menu": "Stats Menu",
+  "key.att2.player_glow": "Make Players Glow",
+  "key.att2.collect_items": "Collect Items",
+  "key.att2.quest_main": "Main Quest",
+  "key.att2.repair_menu": "Repair Menu",
+  "key.att2.whistle": "Whistle Horse",
+  "key.att2.hud_config": "Configure HUD",
+  "key.att2.broadcast": "Display an item in chat"
+}

@@ -1,0 +1,51 @@
+{
+  "screen.hud_config.title": "Configuration du HUD",
+  "screen.hud_config.show_chronoton": "Afficher Chronoton",
+  "screen.hud_config.show_xp": "Afficher XP",
+  "screen.hud_config.show_mana": "Afficher Mana",
+  "screen.hud_config.show_stats": "Afficher Stats",
+  "screen.hud_config.show_arrows": "Afficher Flèches",
+  "screen.hud_config.language_button": "Langue",
+  "screen.hud_config.save_and_close": "Sauvegarder et Fermer",
+  "keybind.toggle_hud.on": "HUD : Activé",
+  "keybind.toggle_hud.off": "HUD : Désactivé",
+  "keybind.broadcast.cooldown": "Attends encore {s}s avant de renvoyer un item.",
+  "keybind.broadcast.shared": "a partagé un objet !",
+
+  "screen.radial.title": "Menu de Stockage",
+  "screen.radial.center_label": "Stockage",
+
+  "screen.radial.option.0": "Stock 1",
+  "screen.radial.option.1": "Stock 2",
+  "screen.radial.option.2": "Stock 3",
+  "screen.radial.option.3": "Stock 4",
+  "screen.radial.option.4": "Stock 5",
+  "screen.radial.option.5": "Ranger",
+
+  "screen.repair.title": "Réparation",
+  "screen.repair.option.0": "Réparer le casque",
+  "screen.repair.option.1": "Réparer le plastron",
+  "screen.repair.option.2": "Réparer le pantalon",
+  "screen.repair.option.3": "Réparer les bottes",
+  "screen.repair.option.4": "Réparer l'objet en main secondaire",
+  "screen.repair.option.5": "Voir les matériaux de réparation",
+
+
+  "screen.stat_upgrade.title": "Menu d'amélioration des stats",
+  "screen.stat_upgrade.close": "Fermer",
+  "screen.stat_upgrade.skill_points": "Points d'aptitudes disponibles : {points}",
+  "screen.stat_upgrade.req": "Points d'aptitudes nécessaires",
+
+  "stat.label.str": "Force",
+  "stat.label.res": "Résistance",
+  "stat.label.spd": "Vitesse",
+  "stat.label.has": "Vitesse d'attaque",
+  "stat.label.dar": "Regain de Dahäl",
+  "stat.label.her": "Regain de vie",
+  "stat.label.luc": "Chance",
+  "stat.label.hun": "Saturation"
+
+
+}
+
+

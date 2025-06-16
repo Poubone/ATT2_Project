@@ -1,32 +1,22 @@
 package fr.poubone.att2.client.screen;
 
 import fr.poubone.att2.client.input.KeybindManager;
+import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import org.lwjgl.glfw.GLFW;
 
-public class
-RepairMenuScreen extends Screen {
+public class RepairMenuScreen extends Screen {
     private static final int OPTION_COUNT = 6;
     private int selectedOption = -1;
 
-    private static final String[] TOOLTIP_LABELS = {
-            "Réparer le casque",
-            "Réparer le plastron",
-            "Réparer le pantalon",
-            "Réparer les bottes",
-            "Réparer l'objet en main secondaire",
-            "Voir les matériaux de réparation"
-    };
-
     public RepairMenuScreen() {
-        super(Text.literal("Repair Menu"));
+        super(ModLanguageManager.get("screen.repair.title"));
     }
 
     @Override
@@ -50,12 +40,9 @@ RepairMenuScreen extends Screen {
         angle = (angle + 2 * Math.PI) % (2 * Math.PI);
 
         final double OFFSET = 1.7;
-
-        if (distance < radius / 2.5) {
-            selectedOption = -1;
-        } else {
-            selectedOption = (int)(((angle / (2 * Math.PI)) * OPTION_COUNT + OFFSET) % OPTION_COUNT);
-        }
+        selectedOption = (distance < radius / 2.5)
+                ? -1
+                : (int) (((angle / (2 * Math.PI)) * OPTION_COUNT + OFFSET) % OPTION_COUNT);
 
         ItemStack[] itemIcons = getRepairOptionIcons();
 
@@ -74,13 +61,12 @@ RepairMenuScreen extends Screen {
             context.drawItem(stack, 0, 0);
             context.getMatrices().pop();
 
-            // Tooltip
             if (i == selectedOption) {
-                context.drawTooltip(textRenderer, Text.literal(TOOLTIP_LABELS[i]), mouseX, mouseY);
+                context.drawTooltip(textRenderer, ModLanguageManager.get("screen.repair.option." + i), mouseX, mouseY);
             }
         }
 
-        context.drawCenteredTextWithShadow(textRenderer, Text.literal("Réparation"), cx, cy - 8, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(textRenderer, ModLanguageManager.get("screen.repair.title"), cx, cy - 8, 0xFFFFFF);
     }
 
     private ItemStack[] getRepairOptionIcons() {

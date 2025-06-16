@@ -15,6 +15,9 @@ public class HUDConfig {
     public boolean showStats = true;
     public boolean showArrows = true;
 
+    // ✅ Nouvelle option : langue du mod
+    public String modLanguage = "fr";
+
     private static final File FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), "att2_hud.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -46,5 +49,15 @@ public class HUDConfig {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // ➕ Méthode utilitaire pour modifier la langue
+    public static void setModLanguage(String langCode) {
+        get().modLanguage = langCode;
+        save();
+    }
+
+    public static String getModLanguage() {
+        return get().modLanguage;
     }
 }
