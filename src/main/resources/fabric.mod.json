@@ -19,6 +19,7 @@
   "mixins": [
     "att2.mixins.json"
   ],
+  "accessWidener": "att2.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
