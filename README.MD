@@ -12,8 +12,7 @@
 - 📦 **Direct support** for **ATT2 datapack** features via in-game functions
 - 📡 **Item Hover Broadcast** – Share your held item in chat with hoverable tooltip
 
-> 💬 *Currently available in **French only***  
-> 🌍 Translations & localization updates are planned.
+> 💬 *Currently available in **French** and **English***
 
 ---
 
@@ -34,7 +33,7 @@ When the key is pressed (default: **O**), the item is **temporarily shared** via
 
 > This system **requires the official datapack** to be installed and loaded.
 
-Make sure the datapack (`mymod_broadcast_delayed_setitem.zip`) is in your world’s `datapacks/` folder and correctly activated.
+Make sure the datapack (`att2_addon_itemhoover.zip`) is in your world’s `datapacks/` folder and correctly activated.
 
 You can download it directly from the [Releases](../../releases) tab.
 
