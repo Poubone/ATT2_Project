@@ -36,7 +36,6 @@ public class BroadcastScanner {
             }
         }
 
-        // 🔁 Nettoyage après 2 secondes
         Iterator<Map.Entry<UUID, Long>> it = seen.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<UUID, Long> entry = it.next();

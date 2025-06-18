@@ -43,7 +43,10 @@
   "stat.label.dar": "Dahäl Regen",
   "stat.label.her": "Health Regen",
   "stat.label.luc": "Luck",
-  "stat.label.hun": "Saturation"
+  "stat.label.hun": "Saturation",
+
+  "level.label": "Level"
+
 }
 
 

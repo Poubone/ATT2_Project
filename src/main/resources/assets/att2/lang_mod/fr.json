@@ -43,7 +43,9 @@
   "stat.label.dar": "Regain de Dahäl",
   "stat.label.her": "Regain de vie",
   "stat.label.luc": "Chance",
-  "stat.label.hun": "Saturation"
+  "stat.label.hun": "Saturation",
+
+  "level.label": "Niveau"
 
 
 }

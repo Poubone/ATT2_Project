@@ -224,7 +224,7 @@ public class StatUpgradeScreen extends Screen {
 
             Integer req = upgradeRequirements.get(statKey);
             if (req != null) {
-                if (skillPoints < req) {
+                if (skillPoints < req || req == 0) {
                     btn.setMessage(Text.literal("🔒"));
                     btn.active = false;
                 } else {

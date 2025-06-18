@@ -1,5 +1,6 @@
 package fr.poubone.att2.client.hud;
 
+import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.scoreboard.Scoreboard;
@@ -42,7 +43,7 @@ public class XPDisplay {
             }
             int currentXp = client.player.experienceLevel;
 
-            String display = "Niveau " + currentLvl + " : " + currentXp + "/" + requiredXp;
+            String display = ModLanguageManager.get("level.label").getString()+ " " +currentLvl + " : " + currentXp + "/" + requiredXp;
             HudDrawUtils.drawXPHUDValue(context, display, 8, 0x00FF00);
         }
     }
