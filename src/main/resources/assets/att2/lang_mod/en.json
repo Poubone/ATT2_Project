@@ -5,6 +5,7 @@
   "screen.hud_config.show_mana": "Show Mana",
   "screen.hud_config.show_stats": "Show Stats",
   "screen.hud_config.show_arrows": "Show Arrows",
+  "screen.hud_config.show_armor_durability" : "Show Armor Durability",
   "screen.hud_config.language_button": "Language",
   "screen.hud_config.save_and_close": "Save and Close",
   "keybind.toggle_hud.on": "HUD: Enabled",

@@ -43,11 +43,13 @@ public class HUDConfigScreen extends Screen {
         checkboxes.add(addDrawableChild(new CheckboxWidget(width / 2 - 100, y + 50, 200, 20, ModLanguageManager.get("screen.hud_config.show_mana"), config.showMana)));
         checkboxes.add(addDrawableChild(new CheckboxWidget(width / 2 - 100, y + 75, 200, 20, ModLanguageManager.get("screen.hud_config.show_stats"), config.showStats)));
         checkboxes.add(addDrawableChild(new CheckboxWidget(width / 2 - 100, y + 100, 200, 20, ModLanguageManager.get("screen.hud_config.show_arrows"), config.showArrows)));
+        checkboxes.add(addDrawableChild(new CheckboxWidget(width / 2 - 100, y + 125, 200, 20, ModLanguageManager.get("screen.hud_config.show_armor_durability"), config.showArmorDurability)));
+
 
         languageButton = addDrawableChild(ButtonWidget.builder(
                 Text.literal(ModLanguageManager.get("screen.hud_config.language_button").getString() + " : " + config.modLanguage.toUpperCase()),
                 b -> cycleLanguage()
-        ).dimensions(width / 2 - 100, y + 130, 200, 20).build());
+        ).dimensions(width / 2 - 100, y + 155, 200, 20).build());
 
         addDrawableChild(ButtonWidget.builder(ModLanguageManager.get("screen.hud_config.save_and_close"), b -> {
             config.showChronoton = checkboxes.get(0).isChecked();
@@ -55,9 +57,10 @@ public class HUDConfigScreen extends Screen {
             config.showMana = checkboxes.get(2).isChecked();
             config.showStats = checkboxes.get(3).isChecked();
             config.showArrows = checkboxes.get(4).isChecked();
+            config.showArmorDurability = checkboxes.get(5).isChecked();
             HUDConfig.save();
             MinecraftClient.getInstance().setScreen(null);
-        }).dimensions(width / 2 - 100, y + 160, 200, 20).build());
+        }).dimensions(width / 2 - 100, y + 185, 200, 20).build());
     }
 
     private void cycleLanguage() {

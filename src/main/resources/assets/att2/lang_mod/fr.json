@@ -5,6 +5,7 @@
   "screen.hud_config.show_mana": "Afficher Mana",
   "screen.hud_config.show_stats": "Afficher Stats",
   "screen.hud_config.show_arrows": "Afficher Flèches",
+  "screen.hud_config.show_armor_durability": "Afficher Durabilité Armure",
   "screen.hud_config.language_button": "Langue",
   "screen.hud_config.save_and_close": "Sauvegarder et Fermer",
   "keybind.toggle_hud.on": "HUD : Activé",

@@ -20,6 +20,7 @@ public class HudRenderer {
         if (config.showMana) ManaOrbDisplay.render(context);
         if (config.showStats) StatIconsDisplay.render(context);
         if (config.showArrows) ArrowDisplay.render(context);
+        if (config.showArmorDurability) ArmorDurabilityDisplay.render(context);
     }
 }
 

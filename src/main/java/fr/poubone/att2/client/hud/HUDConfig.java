@@ -15,6 +15,8 @@ public class HUDConfig {
     public boolean showStats = true;
     public boolean showArrows = true;
 
+    public boolean showArmorDurability = true;
+
     // ✅ Nouvelle option : langue du mod
     public String modLanguage = "fr";
 
