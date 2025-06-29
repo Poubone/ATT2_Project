@@ -15,6 +15,8 @@ import java.util.List;
 
 public class HUDConfigScreen extends Screen {
     private final List<CheckboxWidget> checkboxes = new ArrayList<>();
+    private final List<String> rarityKeys = List.of("com", "cur", "epi", "epi_set", "leg", "leg_armset",
+            "misc", "myt", "que", "rar", "spe", "ult", "unc", "unkcom");
     private final List<String> availableLanguages = Arrays.asList("en", "fr");
     private int currentLangIndex = 0;
     private ButtonWidget languageButton;
@@ -35,43 +37,92 @@ public class HUDConfigScreen extends Screen {
         currentLangIndex = availableLanguages.indexOf(config.modLanguage);
         if (currentLangIndex < 0) currentLangIndex = 0;
 
-        int y = height / 4;
         checkboxes.clear();
+        List<OptionEntry> options = new ArrayList<>();
 
-        checkboxes.add(addDrawableChild(new CheckboxWidget(width / 2 - 100, y, 200, 20, ModLanguageManager.get("screen.hud_config.show_chronoton"), config.showChronoton)));
-        checkboxes.add(addDrawableChild(new CheckboxWidget(width / 2 - 100, y + 25, 200, 20, ModLanguageManager.get("screen.hud_config.show_xp"), config.showXP)));
-        checkboxes.add(addDrawableChild(new CheckboxWidget(width / 2 - 100, y + 50, 200, 20, ModLanguageManager.get("screen.hud_config.show_mana"), config.showMana)));
-        checkboxes.add(addDrawableChild(new CheckboxWidget(width / 2 - 100, y + 75, 200, 20, ModLanguageManager.get("screen.hud_config.show_stats"), config.showStats)));
-        checkboxes.add(addDrawableChild(new CheckboxWidget(width / 2 - 100, y + 100, 200, 20, ModLanguageManager.get("screen.hud_config.show_arrows"), config.showArrows)));
-        checkboxes.add(addDrawableChild(new CheckboxWidget(width / 2 - 100, y + 125, 200, 20, ModLanguageManager.get("screen.hud_config.show_armor_durability"), config.showArmorDurability)));
+        // HUD options
+        options.add(new OptionEntry(ModLanguageManager.get("screen.hud_config.show_chronoton").getString(), config.showChronoton));
+        options.add(new OptionEntry(ModLanguageManager.get("screen.hud_config.show_xp").getString(), config.showXP));
+        options.add(new OptionEntry(ModLanguageManager.get("screen.hud_config.show_mana").getString(), config.showMana));
+        options.add(new OptionEntry(ModLanguageManager.get("screen.hud_config.show_stats").getString(), config.showStats));
+        options.add(new OptionEntry(ModLanguageManager.get("screen.hud_config.show_arrows").getString(), config.showArrows));
+        options.add(new OptionEntry(ModLanguageManager.get("screen.hud_config.show_armor_durability").getString(), config.showArmorDurability));
 
+        // Loot beam options
+        options.add(new OptionEntry(ModLanguageManager.get("screen.hud_config.render_allItems").getString(), config.allItems));
+        options.add(new OptionEntry(ModLanguageManager.get("screen.hud_config.render_nametags").getString(), config.renderNametags));
+        options.add(new OptionEntry(ModLanguageManager.get("screen.hud_config.render_stackcount").getString(), config.renderStackcount));
+
+        // Rarities
+        for (String rarity : rarityKeys) {
+            String key = "screen.hud_config.render_rarity." + rarity;
+            boolean enabled = config.renderRarities.contains(rarity);
+            options.add(new OptionEntry(ModLanguageManager.get(key).getString(), enabled));
+        }
+
+        int spacing = 25;
+        int buttonWidth = 200;
+        int margin = 20;
+        int availableWidth = width - margin * 2;
+        int availableHeight = height - margin * 4 - 50; // espace boutons
+        int maxRows = Math.max(1, availableHeight / spacing);
+        int columns = (int) Math.ceil(options.size() / (float) maxRows);
+
+        int startX = (width - (columns * (buttonWidth + 20) - 20)) / 2;
+        int baseY = margin * 2;
+
+        for (int i = 0; i < options.size(); i++) {
+            int col = i / maxRows;
+            int row = i % maxRows;
+            int x = startX + col * (buttonWidth + 20);
+            int y = baseY + row * spacing;
+
+            OptionEntry entry = options.get(i);
+            checkboxes.add(addDrawableChild(new CheckboxWidget(x, y, buttonWidth, 20, Text.literal(entry.label()), entry.value())));
+        }
+
+        int yButtons = baseY + maxRows * spacing + 10;
 
         languageButton = addDrawableChild(ButtonWidget.builder(
                 Text.literal(ModLanguageManager.get("screen.hud_config.language_button").getString() + " : " + config.modLanguage.toUpperCase()),
                 b -> cycleLanguage()
-        ).dimensions(width / 2 - 100, y + 155, 200, 20).build());
+        ).dimensions(width / 2 - buttonWidth / 2, yButtons, buttonWidth, 20).build());
 
-        addDrawableChild(ButtonWidget.builder(ModLanguageManager.get("screen.hud_config.save_and_close"), b -> {
-            config.showChronoton = checkboxes.get(0).isChecked();
-            config.showXP = checkboxes.get(1).isChecked();
-            config.showMana = checkboxes.get(2).isChecked();
-            config.showStats = checkboxes.get(3).isChecked();
-            config.showArrows = checkboxes.get(4).isChecked();
-            config.showArmorDurability = checkboxes.get(5).isChecked();
-            HUDConfig.save();
-            MinecraftClient.getInstance().setScreen(null);
-        }).dimensions(width / 2 - 100, y + 185, 200, 20).build());
+        addDrawableChild(ButtonWidget.builder(
+                ModLanguageManager.get("screen.hud_config.save_and_close"),
+                b -> {
+                    int i = 0;
+                    config.showChronoton = checkboxes.get(i++).isChecked();
+                    config.showXP = checkboxes.get(i++).isChecked();
+                    config.showMana = checkboxes.get(i++).isChecked();
+                    config.showStats = checkboxes.get(i++).isChecked();
+                    config.showArrows = checkboxes.get(i++).isChecked();
+                    config.showArmorDurability = checkboxes.get(i++).isChecked();
+
+                    config.allItems = checkboxes.get(i++).isChecked();
+                    config.renderNametags = checkboxes.get(i++).isChecked();
+                    config.renderStackcount = checkboxes.get(i++).isChecked();
+
+                    config.renderRarities.clear();
+                    for (String rarity : rarityKeys) {
+                        if (checkboxes.get(i++).isChecked()) {
+                            config.renderRarities.add(rarity);
+                        }
+                    }
+
+                    HUDConfig.save();
+                    MinecraftClient.getInstance().setScreen(null);
+                }
+        ).dimensions(width / 2 - buttonWidth / 2, yButtons + spacing, buttonWidth, 20).build());
     }
 
     private void cycleLanguage() {
         currentLangIndex = (currentLangIndex + 1) % availableLanguages.size();
         String newLang = availableLanguages.get(currentLangIndex);
-
         HUDConfig.setModLanguage(newLang);
         ModLanguageManager.loadLanguage(MinecraftClient.getInstance(), newLang);
         this.init();
     }
-
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -79,4 +130,6 @@ public class HUDConfigScreen extends Screen {
         context.drawCenteredTextWithShadow(textRenderer, ModLanguageManager.get("screen.hud_config.title"), width / 2, 20, 0xFFFFFF);
         super.render(context, mouseX, mouseY, delta);
     }
+
+    private record OptionEntry(String label, boolean value) {}
 }
