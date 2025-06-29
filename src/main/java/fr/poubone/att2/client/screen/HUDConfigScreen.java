@@ -16,7 +16,7 @@ import java.util.List;
 public class HUDConfigScreen extends Screen {
     private final List<CheckboxWidget> checkboxes = new ArrayList<>();
     private final List<String> rarityKeys = List.of("com", "cur", "epi", "epi_set", "leg", "leg_armset",
-            "misc", "myt", "que", "rar", "spe", "ult", "unc", "unk");
+            "misc", "myt", "que", "rar", "spe", "ult", "unc", "unk", "epi_esc");
     private final List<String> availableLanguages = Arrays.asList("en", "fr");
     private int currentLangIndex = 0;
     private ButtonWidget languageButton;

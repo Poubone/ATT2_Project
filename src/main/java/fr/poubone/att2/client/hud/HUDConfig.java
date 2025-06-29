@@ -29,7 +29,7 @@ public class HUDConfig {
 
     public List<String> renderRarities = new ArrayList<>(List.of(
             "com", "cur", "epi", "epi_set", "leg", "leg_armset",
-            "misc", "myt", "que", "rar", "spe", "ult", "unc", "unk"
+            "misc", "myt", "que", "rar", "spe", "ult", "unc", "unk", "epi_esc"
     ));
 
     public boolean allItems = true;

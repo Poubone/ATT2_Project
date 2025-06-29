@@ -25,6 +25,8 @@
   "screen.hud_config.render_rarity.ult": "Afficher rareté : ULT",
   "screen.hud_config.render_rarity.unc": "Afficher rareté : UNC",
   "screen.hud_config.render_rarity.unk": "Afficher rareté : UNK",
+  "screen.hud_config.render_rarity.epi_esc": "Afficher rareté: ESC",
+
   "screen.hud_config.language_button": "Langue",
   "screen.hud_config.save_and_close": "Enregistrer et fermer",
 

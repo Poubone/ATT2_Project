@@ -25,6 +25,8 @@
   "screen.hud_config.render_rarity.ult": "Render rarity: ULT",
   "screen.hud_config.render_rarity.unc": "Render rarity: UNC",
   "screen.hud_config.render_rarity.unk": "Render rarity: UNK",
+  "screen.hud_config.render_rarity.epi_esc": "Render rarity: ESC",
+
 
   "keybind.toggle_hud.on": "HUD: Enabled",
   "keybind.toggle_hud.off": "HUD: Disabled",
