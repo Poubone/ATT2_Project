@@ -24,7 +24,7 @@
   "screen.hud_config.render_rarity.spe": "Render rarity: SPE",
   "screen.hud_config.render_rarity.ult": "Render rarity: ULT",
   "screen.hud_config.render_rarity.unc": "Render rarity: UNC",
-  "screen.hud_config.render_rarity.unkcom": "Render rarity: UNKCOM",
+  "screen.hud_config.render_rarity.unk": "Render rarity: UNK",
 
   "keybind.toggle_hud.on": "HUD: Enabled",
   "keybind.toggle_hud.off": "HUD: Disabled",
