@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 public class RadialMenuScreen extends Screen {
-    private static final int OPTION_COUNT = 6;
+    private static final int OPTION_COUNT = 8; // Changement ici
     private int selectedOption = -1;
 
     public RadialMenuScreen() {
@@ -37,13 +37,13 @@ public class RadialMenuScreen extends Screen {
         double angle = Math.atan2(dy, dx);
         angle = (angle + 2 * Math.PI) % (2 * Math.PI);
 
-        final double OFFSET = 1.7;
+        final double OFFSET = 2.5; // ajustement si besoin
         selectedOption = (distance < radius / 2.5)
                 ? -1
                 : (int) (((angle / (2 * Math.PI)) * OPTION_COUNT + OFFSET) % OPTION_COUNT);
 
         for (int i = 0; i < OPTION_COUNT; i++) {
-            double theta = (2 * Math.PI / OPTION_COUNT) * i - Math.PI / 3;
+            double theta = (2 * Math.PI / OPTION_COUNT) * i - Math.PI / 2; // centré en haut
             int tx = (int) (cx + Math.cos(theta) * radius);
             int ty = (int) (cy + Math.sin(theta) * radius);
 
@@ -52,7 +52,7 @@ public class RadialMenuScreen extends Screen {
             context.getMatrices().translate(tx - 8 * scale, ty - 8 * scale, 0);
             context.getMatrices().scale(scale, scale, 1.0f);
 
-            if (i < 5) {
+            if (i < 7) {
                 context.drawItem(Items.CHEST.getDefaultStack(), 0, 0);
             } else {
                 context.drawItem(Items.CHEST_MINECART.getDefaultStack(), 0, 0);
@@ -60,7 +60,7 @@ public class RadialMenuScreen extends Screen {
 
             context.getMatrices().pop();
 
-            if (i < 5) {
+            if (i < 7) {
                 context.drawText(textRenderer, Text.literal("" + (i + 1)), tx - 3, ty - 18, 0xFFFFFF, true);
             }
 
@@ -101,10 +101,10 @@ public class RadialMenuScreen extends Screen {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player == null) return;
 
-        if (index >= 0 && index < 5) {
+        if (index >= 0 && index < 7) {
             int spellLevel = index + 1;
             client.player.networkHandler.sendCommand("function att2:gameplay/dahal/action/spell20/selectlvl" + spellLevel);
-        } else if (index == 5) {
+        } else if (index == 7) {
             client.player.networkHandler.sendCommand("function att2:gameplay/dahal/action/spell20/stock_in");
         }
     }

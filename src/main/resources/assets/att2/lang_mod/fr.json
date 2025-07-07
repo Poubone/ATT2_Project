@@ -44,7 +44,9 @@
   "screen.radial.option.2": "Stock 3",
   "screen.radial.option.3": "Stock 4",
   "screen.radial.option.4": "Stock 5",
-  "screen.radial.option.5": "Ranger",
+  "screen.radial.option.5": "Stock 6",
+  "screen.radial.option.6": "Stock 7",
+  "screen.radial.option.7": "Ranger",
 
   "screen.repair.title": "Réparation",
   "screen.repair.option.0": "Réparer le casque",
