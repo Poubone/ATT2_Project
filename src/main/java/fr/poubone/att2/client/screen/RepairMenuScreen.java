@@ -12,7 +12,7 @@ import net.minecraft.util.Hand;
 import org.lwjgl.glfw.GLFW;
 
 public class RepairMenuScreen extends Screen {
-    private static final int OPTION_COUNT = 6;
+    private static final int OPTION_COUNT = 7;
     private int selectedOption = -1;
 
     public RepairMenuScreen() {
@@ -58,7 +58,14 @@ public class RepairMenuScreen extends Screen {
             context.getMatrices().translate(tx - 8, ty - 8, 0);
             float scale = (i == selectedOption) ? 1.2f : 1.0f;
             context.getMatrices().scale(scale, scale, 1.0f);
-            context.drawItem(stack, 0, 0);
+            
+            if (i == 6) {
+                // Dessiner l'icône composite centrée dans la case
+                drawCompositeArmorIcon(context);
+            } else {
+                context.drawItem(stack, 0, 0);
+            }
+            
             context.getMatrices().pop();
 
             if (i == selectedOption) {
@@ -69,9 +76,24 @@ public class RepairMenuScreen extends Screen {
         context.drawCenteredTextWithShadow(textRenderer, ModLanguageManager.get("screen.repair.title"), cx, cy - 8, 0xFFFFFF);
     }
 
+    private void drawCompositeArmorIcon(DrawContext context) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client.player == null) return;
+        // Récupérer les vraies armures du joueur
+        ItemStack helmet = getItemOrBarrier(client.player.getInventory().getArmorStack(3));
+        ItemStack chestplate = getItemOrBarrier(client.player.getInventory().getArmorStack(2));
+        ItemStack leggings = getItemOrBarrier(client.player.getInventory().getArmorStack(1));
+        ItemStack boots = getItemOrBarrier(client.player.getInventory().getArmorStack(0));
+        // Dessiner les 4 pièces dans un carré 2x2 centré sur (0,0)
+        context.drawItem(helmet, -6, -6);      // Haut gauche
+        context.drawItem(chestplate, 2, -6);   // Haut droite
+        context.drawItem(leggings, -6, 2);     // Bas gauche
+        context.drawItem(boots, 2, 2);         // Bas droite
+    }
+
     private ItemStack[] getRepairOptionIcons() {
         MinecraftClient client = MinecraftClient.getInstance();
-        ItemStack[] icons = new ItemStack[6];
+        ItemStack[] icons = new ItemStack[7];
 
         if (client.player != null) {
             icons[0] = getItemOrBarrier(client.player.getInventory().getArmorStack(3)); // Helmet
@@ -82,6 +104,7 @@ public class RepairMenuScreen extends Screen {
         }
 
         icons[5] = new ItemStack(Items.ANVIL); // Voir les objets
+        icons[6] = new ItemStack(Items.DIAMOND_HELMET); // Réparer toutes les armures (placeholder - sera remplacé par l'icône composite)
         return icons;
     }
 
@@ -117,6 +140,12 @@ public class RepairMenuScreen extends Screen {
     private void executeOption(int index) {
         if (index < 0) return;
 
+        if (index == 6) {
+            // Réparer toutes les armures - exécuter les 4 commandes d'affilée
+            executeAllArmorRepair();
+            return;
+        }
+
         String cmd = switch (index) {
             case 0 -> "function att2:gameplay/shop/mending/tools/trigger_helmet";
             case 1 -> "function att2:gameplay/shop/mending/tools/trigger_chestplate";
@@ -129,6 +158,22 @@ public class RepairMenuScreen extends Screen {
 
         if (cmd != null && MinecraftClient.getInstance().player != null) {
             MinecraftClient.getInstance().player.networkHandler.sendCommand(cmd);
+        }
+    }
+
+    private void executeAllArmorRepair() {
+        if (MinecraftClient.getInstance().player == null) return;
+        
+        // Exécuter les 4 commandes de réparation d'affilée
+        String[] commands = {
+            "function att2:gameplay/shop/mending/tools/trigger_helmet",
+            "function att2:gameplay/shop/mending/tools/trigger_chestplate",
+            "function att2:gameplay/shop/mending/tools/trigger_leggings",
+            "function att2:gameplay/shop/mending/tools/trigger_boots"
+        };
+        
+        for (String command : commands) {
+            MinecraftClient.getInstance().player.networkHandler.sendCommand(command);
         }
     }
 }
